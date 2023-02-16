@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TodoList from "../components/Todolist/todoList";
 
 const Todo = () => {
-  const navigate = useNavigate();
-
-  const params = useParams();
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  console.log("params", params);
-  console.log("searchParams", searchParams.get("orderTemplateId"));
+  // const [searchParams, setSearchParams] = useSearchParams();
 
   const initTodoList = [
     {
@@ -61,9 +55,6 @@ const Todo = () => {
       <button onClick={handleShowAll}>Show ALl</button>
       <button onClick={handleShowNew}>Show New</button>
       <button onClick={handleShowCompleted}>Show Completed</button>
-      <button onClick={() => navigate(`/todoList?orderTemplateId=123`)}>
-        Navi
-      </button>
     </div>
   );
 };
