@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import productApi from "../../../api/productApi";
 import ProductSkeleton from "../components/ProductSkeleton";
 import { Typography } from "@mui/material";
+import ProductList from "../components/ProductList";
 
 const ListPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
@@ -17,7 +18,7 @@ const ListPage = () => {
         width: "250px",
       },
       right: {
-        flex: "1 1 auto",
+        flex: "1 1 0",
         textAlign: "left",
       },
     })
@@ -27,11 +28,27 @@ const ListPage = () => {
   const [productList, setProductList] = useState([] as any);
   const [loading, setLoading] = useState(true);
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
   const getProductList = async () => {
+    await delay(1000);
     const { data } = await productApi.getAll({ _page: 1, _limit: 10 });
-    console.log(data, "response");
     setProductList(data);
+    setLoading(false);
   };
+  console.log(productList, "productList");
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     try {
+  //       getProductList();
+  //     } catch (error) {
+  //       console.log("Day la loi", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }, 1000);
+  // }, []);
+
   useEffect(() => {
     try {
       getProductList();
@@ -39,7 +56,6 @@ const ListPage = () => {
       console.log("Day la loi", error);
     }
   }, []);
-
   return (
     <Box>
       <Container>
@@ -49,7 +65,13 @@ const ListPage = () => {
           </Grid>
           <Grid className={classes.right}>
             {" "}
-            <Paper elevation={0}>{loading ? <ProductSkeleton/> : <Typography></Typography>}</Paper>
+            <Paper elevation={0}>
+              {loading ? (
+                <ProductSkeleton />
+              ) : (
+                <ProductList data={productList} />
+              )}
+            </Paper>
           </Grid>
         </Grid>
       </Container>

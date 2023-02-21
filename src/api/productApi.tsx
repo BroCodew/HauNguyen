@@ -1,5 +1,25 @@
 import axiosClient from "./axiosClient";
 
+export interface IProducts {
+  name: string;
+  category: any;
+  created_at: number;
+  created_by: number;
+  description: string;
+  id: number;
+  isFreeShip: boolean;
+  isPromotion: boolean;
+  originalPrice: number;
+  productId: any;
+  promotionPercent: number;
+  salePrice: number;
+  shortDescription: string;
+  thumbnail: any;
+  title: any;
+  updated_at: number;
+  updated_by: number;
+}
+
 const productApi = {
   async getAll(params: any) {
     // Transform _page to _start
