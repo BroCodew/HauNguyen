@@ -1,14 +1,14 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import Grid from "@mui/system/Unstable_Grid";
 import { makeStyles } from "tss-react/mui";
-import Paper from "@mui/material/Paper";
 
-import React, { useEffect, useState } from "react";
+import { Pagination } from "@mui/material";
+import { useEffect, useState } from "react";
 import productApi from "../../../api/productApi";
-import ProductSkeleton from "../components/ProductSkeleton";
-import { Typography } from "@mui/material";
 import ProductList from "../components/ProductList";
+import ProductSkeleton from "../components/ProductSkeleton";
 
 const ListPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
@@ -26,17 +26,38 @@ const ListPage = () => {
   const [color, setColor] = useState<"red" | "blue">("red");
   const { classes, cx } = useStyles({ color });
   const [productList, setProductList] = useState([] as any);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState({
+    _page: 1,
+    _limit: 9,
+  });
+  const [pagination, setPagination] = useState<{
+    limit: number;
+    page: number;
+    total: number;
+  }>({
+    limit: 10,
+    page: 1,
+    total: 120,
+  });
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
   const getProductList = async () => {
-    await delay(1000);
-    const { data } = await productApi.getAll({ _page: 1, _limit: 10 });
-    setProductList(data);
     setLoading(false);
+    await delay(1000);
+    console.log(loading, "loading...");
+    const { data, pagination } = await productApi.getAll(filter);
+    setProductList(data);
+    setPagination(pagination);
+    setLoading(true);
   };
-  console.log(productList, "productList");
+  const handleChangePage = (e: any, page: any) => {
+    setFilter((prev) => ({
+      ...prev,
+      _page: page,
+    }));
+  };
   // useEffect(() => {
   //   setTimeout(() => {
   //     try {
@@ -55,7 +76,7 @@ const ListPage = () => {
     } catch (error) {
       console.log("Day la loi", error);
     }
-  }, []);
+  }, [filter]);
   return (
     <Box>
       <Container>
@@ -66,11 +87,17 @@ const ListPage = () => {
           <Grid className={classes.right}>
             {" "}
             <Paper elevation={0}>
-              {loading ? (
+              {!loading ? (
                 <ProductSkeleton />
               ) : (
                 <ProductList data={productList} />
               )}
+              <Pagination
+                count={Math.ceil(pagination.total / pagination.limit)}
+                color="primary"
+                defaultPage={pagination.page}
+                onChange={handleChangePage}
+              ></Pagination>
             </Paper>
           </Grid>
         </Grid>

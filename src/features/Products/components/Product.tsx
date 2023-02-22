@@ -1,18 +1,21 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import { IProducts } from "../../../api/productApi";
+import {
+  STATIC_HOST_URL_IMG,
+  THUMBNAIL_URL_IMG_PLACEHOLDER,
+} from "../../../constant";
 
 interface IProductList {
   product: IProducts;
 }
 
 const Product = ({ product }: IProductList) => {
-  console.log(product.thumbnail?.url);
+  console.log(product);
   const thumbnailUrl = product.thumbnail
-    ? `http://api.ezfrontend.com${product.thumbnail?.url}`
-    : `https://via.placeholder.com/444/000000/FFFFFF/?text=IPaddress.net`;
+    ? `${STATIC_HOST_URL_IMG}${product.thumbnail?.url}`
+    : THUMBNAIL_URL_IMG_PLACEHOLDER;
   return (
     <Box padding={8}>
       {/* <Skeleton variant="rectangular" width="100%" height={118}></Skeleton> */}
@@ -21,7 +24,13 @@ const Product = ({ product }: IProductList) => {
       </Box>
       <Typography variant="body2">{product.name}</Typography>
       <Typography variant="body2">
-        {product.salePrice} - {product.promotionPercent}
+        <Box fontWeight={700}>
+          {product.salePrice.toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+          })}
+        </Box>{" "}
+         {product.promotionPercent > 0 ? `-${product.promotionPercent}%` : ""}
       </Typography>
     </Box>
   );

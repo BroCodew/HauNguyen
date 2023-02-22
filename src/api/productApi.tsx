@@ -21,9 +21,9 @@ export interface IProducts {
 }
 
 const productApi = {
-  async getAll(params: any) {
+  async getAll(params: { _page: number; _limit: number }) {
     // Transform _page to _start
-    const newParams = { ...params };
+    const newParams: any = { ...params };
     newParams._start =
       !params._page || params._page <= 1
         ? 0
@@ -34,7 +34,7 @@ const productApi = {
     const productList = await axiosClient.get("/products", {
       params: newParams,
     });
-    const count = await axiosClient.get("/products/count", {
+    const count: number = await axiosClient.get("/products/count", {
       params: newParams,
     });
     // Build response and return
