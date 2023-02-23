@@ -17,12 +17,17 @@ const Product = ({ product }: IProductList) => {
     ? `${STATIC_HOST_URL_IMG}${product.thumbnail?.url}`
     : THUMBNAIL_URL_IMG_PLACEHOLDER;
   return (
-    <Box padding={8}>
+    <Box padding={1}>
       {/* <Skeleton variant="rectangular" width="100%" height={118}></Skeleton> */}
-      <Box padding={1}>
-        <img src={thumbnailUrl} alt={product.name} width="100%" />
+      <Box minHeight="200px">
+        <img
+          src={thumbnailUrl}
+          alt={product.name}
+          width="100%"
+          style={{ borderRadius: "2px" }}
+        />
       </Box>
-      <Typography variant="body2">{product.name}</Typography>
+      <Typography variant="body2">{product.name.toUpperCase()}</Typography>
       <Typography variant="body2">
         <Box fontWeight={700}>
           {product.salePrice.toLocaleString("it-IT", {
@@ -30,7 +35,7 @@ const Product = ({ product }: IProductList) => {
             currency: "VND",
           })}
         </Box>{" "}
-         {product.promotionPercent > 0 ? `-${product.promotionPercent}%` : ""}
+        {product.promotionPercent > 0 ? `-${product.promotionPercent}%` : ""}
       </Typography>
     </Box>
   );

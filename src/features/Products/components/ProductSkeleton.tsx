@@ -11,11 +11,11 @@ const ProductSkeleton = () => {
             <Box padding={8}>
               <Skeleton
                 variant="rectangular"
-                width="100%"
+                width="200%"
                 height={200}
               ></Skeleton>
               <Skeleton />
-              <Skeleton width="60%" />
+              <Skeleton width="100%" />
             </Box>
           </Grid>
         ))}

@@ -21,6 +21,13 @@ const ListPage = () => {
         flex: "1 1 0",
         textAlign: "left",
       },
+      pagination: {
+        display: "flex",
+        justifyContent: "center",
+        flexFlow: "row nowrap",
+        marginTop: "20px",
+        paddingBottom: "20px",
+      },
     })
   );
   const [color, setColor] = useState<"red" | "blue">("red");
@@ -43,32 +50,29 @@ const ListPage = () => {
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
+
   const getProductList = async () => {
     setLoading(false);
     await delay(1000);
-    console.log(loading, "loading...");
     const { data, pagination } = await productApi.getAll(filter);
     setProductList(data);
     setPagination(pagination);
     setLoading(true);
+    console.log("pagination...", pagination);
   };
+  // const handleChangePage = (e: any, page: any) => {
+  //   setFilter((prev) => ({
+  //     ...prev,
+  //     _page: page,
+  //   }));
+  // };
+
   const handleChangePage = (e: any, page: any) => {
-    setFilter((prev) => ({
+    setFilter((prev: any) => ({
       ...prev,
       _page: page,
     }));
   };
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     try {
-  //       getProductList();
-  //     } catch (error) {
-  //       console.log("Day la loi", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }, 1000);
-  // }, []);
 
   useEffect(() => {
     try {
@@ -92,12 +96,15 @@ const ListPage = () => {
               ) : (
                 <ProductList data={productList} />
               )}
-              <Pagination
-                count={Math.ceil(pagination.total / pagination.limit)}
-                color="primary"
-                defaultPage={pagination.page}
-                onChange={handleChangePage}
-              ></Pagination>
+              <Box className={classes.pagination}>
+                <Pagination
+                  count={Math.ceil(pagination.total / pagination.limit)}
+                  color="primary"
+                  defaultPage={pagination.page}
+                  onChange={handleChangePage}
+                  style={{ display: "flex", justifyContent: "center" }}
+                ></Pagination>
+              </Box>
             </Paper>
           </Grid>
         </Grid>

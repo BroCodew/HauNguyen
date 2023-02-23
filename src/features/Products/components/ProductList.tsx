@@ -14,7 +14,15 @@ const ProductList = ({ data }: IProductList) => {
       <Grid container>
         {data.map((product) => {
           return (
-            <Grid key={product.id} xs={12} sm={6} md={4} lg={3}>
+            <Grid
+              key={product.id}
+              // sx={{ padding: "16px" }}
+              // sx={{ padding: "px" }}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+            >
               <Product product={product} />
             </Grid>
           );
