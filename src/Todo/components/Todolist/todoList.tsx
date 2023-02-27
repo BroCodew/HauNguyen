@@ -4,7 +4,6 @@ import classnames from "classnames";
 const TodoList = (props: { todoList: any; onClickTodo: Function }) => {
   const { todoList, onClickTodo } = props;
   const className = (type: string) => {
-    console.log(type)
     return classnames("checkbox", {
       completed: type === "completed",
       new: type === "new",

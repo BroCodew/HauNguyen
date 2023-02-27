@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import productApi from "../../../api/productApi";
 import ProductList from "../components/ProductList";
 import ProductSkeleton from "../components/ProductSkeleton";
+import ProductSort from "../components/ProductSort";
 
 const ListPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
@@ -37,6 +38,7 @@ const ListPage = () => {
   const [filter, setFilter] = useState({
     _page: 1,
     _limit: 9,
+    _sort: "salePrice:DESC",
   });
   const [pagination, setPagination] = useState<{
     limit: number;
@@ -50,7 +52,6 @@ const ListPage = () => {
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
-
   const getProductList = async () => {
     setLoading(false);
     await delay(1000);
@@ -58,14 +59,7 @@ const ListPage = () => {
     setProductList(data);
     setPagination(pagination);
     setLoading(true);
-    console.log("pagination...", pagination);
   };
-  // const handleChangePage = (e: any, page: any) => {
-  //   setFilter((prev) => ({
-  //     ...prev,
-  //     _page: page,
-  //   }));
-  // };
 
   const handleChangePage = (e: any, page: any) => {
     setFilter((prev: any) => ({
@@ -73,7 +67,14 @@ const ListPage = () => {
       _page: page,
     }));
   };
-
+  const handleSortChange = (newSortValue: any) => {
+    setFilter((prev) => ({
+      ...prev,
+      _sort: newSortValue,
+    }));
+    console.log("newSortValue", newSortValue);
+  };
+  //
   useEffect(() => {
     try {
       getProductList();
@@ -89,8 +90,11 @@ const ListPage = () => {
             <Paper elevation={0}>Left column</Paper>
           </Grid>
           <Grid className={classes.right}>
-            {" "}
             <Paper elevation={0}>
+              <ProductSort
+                currentSort={filter._sort}
+                onChange={handleSortChange}
+              />
               {!loading ? (
                 <ProductSkeleton />
               ) : (

@@ -12,7 +12,6 @@ interface IProductList {
 }
 
 const Product = ({ product }: IProductList) => {
-  console.log(product);
   const thumbnailUrl = product.thumbnail
     ? `${STATIC_HOST_URL_IMG}${product.thumbnail?.url}`
     : THUMBNAIL_URL_IMG_PLACEHOLDER;
