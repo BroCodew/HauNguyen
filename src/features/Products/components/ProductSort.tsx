@@ -4,10 +4,10 @@ import Tab from "@mui/material/Tab";
 
 const ProductSort = (props: any) => {
   const { onChange, currentSort } = props;
-//   const handleSortChange = (event: any, newValue: any) => {
-//     if (onChange) onChange(newValue);
-//     console.log(newValue, "newValue");
-//   };
+  // const handleSortChange = (event: any, newValue: any) => {
+  //   if (onChange) onChange(newValue);
+  //   console.log(newValue, "newValue");
+  // };
 
   return (
     <Tabs

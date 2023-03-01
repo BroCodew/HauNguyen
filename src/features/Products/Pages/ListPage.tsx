@@ -10,6 +10,7 @@ import productApi from "../../../api/productApi";
 import ProductList from "../components/ProductList";
 import ProductSkeleton from "../components/ProductSkeleton";
 import ProductSort from "../components/ProductSort";
+import ProductFilters from "../components/ProductFilters";
 
 const ListPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
@@ -75,6 +76,12 @@ const ListPage = () => {
     console.log("newSortValue", newSortValue);
   };
   //
+  const handleFilterChange = (newFilterValue: any) => {
+    setFilter((prev) => ({
+      ...prev,
+      ...newFilterValue,
+    }));
+  };
   useEffect(() => {
     try {
       getProductList();
@@ -87,7 +94,9 @@ const ListPage = () => {
       <Container>
         <Grid container spacing={1}>
           <Grid className={classes.left}>
-            <Paper elevation={0}>Left column</Paper>
+            <Paper elevation={0}>
+              <ProductFilters filters={filter} onChange={handleFilterChange} />
+            </Paper>
           </Grid>
           <Grid className={classes.right}>
             <Paper elevation={0}>

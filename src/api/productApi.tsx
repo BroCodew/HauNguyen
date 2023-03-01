@@ -20,6 +20,11 @@ export interface IProducts {
   updated_by: number;
 }
 
+export interface IFilters {
+  onChange: (value: any) => void;
+  filters: any;
+}
+
 const productApi = {
   async getAll(params: { _page: number; _limit: number }) {
     // Transform _page to _start
