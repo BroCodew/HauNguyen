@@ -7,17 +7,17 @@ interface IProductFilters extends IFilters {}
 
 const ProductFilters = (props: IProductFilters) => {
   const { onChange, filters } = props;
-  const handleCategoryChange = (newCategory: any) => {
+  const handleCategoryChange = (newCategoryId: number) => {
     if (!onChange) return;
     const newFilters = {
       ...filters,
-      categoryId: newCategory,
+      "category.id": newCategoryId,
     };
     onChange(newFilters);
   };
   return (
     <Box>
-      <FilterByCategory />
+      <FilterByCategory onChange={handleCategoryChange} />
     </Box>
   );
 };
