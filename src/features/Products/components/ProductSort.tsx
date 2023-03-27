@@ -4,18 +4,19 @@ import Tab from "@mui/material/Tab";
 
 const ProductSort = (props: any) => {
   const { onChange, currentSort } = props;
-  // const handleSortChange = (event: any, newValue: any) => {
-  //   if (onChange) onChange(newValue);
-  //   console.log(newValue, "newValue");
-  // };
+  const handleSortChange = (event: any, newValue: any) => {
+    if (onChange) onChange(newValue);
+    console.log(newValue, "newValue");
+  };
 
   return (
     <Tabs
       value={currentSort}
-      onChange={(event: any, newValue: any) => {
-        if (onChange) onChange(newValue);
-        console.log(newValue, "newValue");
-      }}
+      // onChange={(event: any, newValue: any) => {
+      //   if (onChange) onChange(newValue);
+      //   console.log(newValue, "newValue");
+      // }}
+      onChange={handleSortChange}
       aria-label="basic tabs example"
       textColor="primary"
     >

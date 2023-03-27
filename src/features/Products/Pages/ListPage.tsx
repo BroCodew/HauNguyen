@@ -57,6 +57,8 @@ const ListPage = () => {
     setLoading(false);
     await delay(1000);
     const { data, pagination } = await productApi.getAll(filter);
+    console.log(await productApi.getAll(filter));
+
     setProductList(data);
     setPagination(pagination);
     setLoading(true);
@@ -73,7 +75,6 @@ const ListPage = () => {
       ...prev,
       _sort: newSortValue,
     }));
-    console.log("newSortValue", newSortValue);
   };
   //
   const handleFilterChange = (newFilterValue: any) => {
