@@ -11,6 +11,8 @@ import ProductList from "../components/ProductList";
 import ProductSkeleton from "../components/ProductSkeleton";
 import ProductSort from "../components/ProductSort";
 import ProductFilters from "../components/ProductFilters";
+import FilterByViewers from "../components/Filters/FilterByViewers";
+// import FilterByViewers from "../components/Filters/FilterByViewers";
 
 const ListPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
@@ -90,6 +92,9 @@ const ListPage = () => {
       console.log("Day la loi", error);
     }
   }, [filter]);
+  const setNewFilters = (newFilters: any) => {
+    setFilter(newFilters);
+  };
   return (
     <Box>
       <Container>
@@ -105,6 +110,8 @@ const ListPage = () => {
                 currentSort={filter._sort}
                 onChange={handleSortChange}
               />
+              <FilterByViewers filters={filter} onChange={setNewFilters} />
+              
               {!loading ? (
                 <ProductSkeleton />
               ) : (
