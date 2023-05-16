@@ -1,15 +1,6 @@
-import {
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 
 const FilterByService = (props: any) => {
@@ -44,21 +35,23 @@ const FilterByService = (props: any) => {
     console.log(checked);
   };
 
+  console.log(111, filters);
+
   return (
     <Box className={classes.root}>
       <Typography variant="subtitle2">Dịch Vụ</Typography>
       <ul>
         {[
-          { value: "isFreeShip", label: "Van Chuyen Mien Phi" },
+          { value: "isFreeShip", label: "Giao Hang Mien Phi" },
           { value: "isPromotion", label: "Co Khuyen Mai" },
-        ].map((service: any) => (
-          <li key={service.value}>
+        ].map((service) => (
+          <li key={service?.value}>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={Boolean(filters[service.value])}
+                  checked={Boolean(filters ? filters[service.value] : false)}
                   onChange={handleChange}
-                  name={service.value}
+                  name={service?.value}
                   color="primary"
                 />
               }

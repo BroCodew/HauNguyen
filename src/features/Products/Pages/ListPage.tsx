@@ -59,8 +59,6 @@ const ListPage = () => {
     setLoading(false);
     await delay(1000);
     const { data, pagination } = await productApi.getAll(filter);
-    console.log(await productApi.getAll(filter));
-
     setProductList(data);
     setPagination(pagination);
     setLoading(true);
@@ -95,6 +93,9 @@ const ListPage = () => {
   const setNewFilters = (newFilters: any) => {
     setFilter(newFilters);
   };
+
+  console.log("filter._sort", filter);
+
   return (
     <Box>
       <Container>
@@ -107,11 +108,11 @@ const ListPage = () => {
           <Grid className={classes.right}>
             <Paper elevation={0}>
               <ProductSort
-                currentSort={filter._sort}
+                currentSort={filter?._sort}
                 onChange={handleSortChange}
               />
               <FilterByViewers filters={filter} onChange={setNewFilters} />
-              
+
               {!loading ? (
                 <ProductSkeleton />
               ) : (

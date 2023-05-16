@@ -27,7 +27,7 @@ const Product = ({ product }: IProductList) => {
         />
       </Box>
       <Typography variant="body2">{product.name.toUpperCase()}</Typography>
-      <Typography variant="body2">
+      <Typography variant="body2" component="span">
         <Box fontWeight={700}>
           {product.salePrice.toLocaleString("it-IT", {
             style: "currency",

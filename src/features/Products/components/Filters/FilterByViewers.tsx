@@ -1,7 +1,6 @@
 import { Chip } from "@mui/material";
 import Box from "@mui/material/Box";
-import { isVisible } from "@testing-library/user-event/dist/utils";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 
 const FilterByViewers = (props: any) => {
@@ -26,14 +25,14 @@ const FilterByViewers = (props: any) => {
   const FILTER_LIST = [
     {
       id: 1,
-      getLabel: (filter: string) => "Van Chuyen Mien Phi",
+      getLabel: () => "Giao Hang Mien Phi",
       isActive: (filter: any) => filter.isFreeShip,
       isVisible: () => true,
       isRemovable: false,
       onRemove: () => {},
       onToggle: (filter: any) => {
         const newFilter = { ...filter };
-        if (newFilter.isFreeShip) {
+        if (newFilter?.isFreeShip) {
           delete newFilter.isFreeShip;
         } else {
           newFilter.isFreeShip = true;
@@ -43,21 +42,33 @@ const FilterByViewers = (props: any) => {
     },
     {
       id: 2,
-      getLabel: (filter: string) => "Khuyen mai",
-      isActive: (filter: any) => true,
-      isVisible: (filter: any) => true,
-      isRemovable: (filter: any) => true,
-      onRemove: (filter: any) => {},
-      onToggle: 1,
+      getLabel: () => "Khuyen mai",
+      isActive: () => true,
+      isVisible: (filter: any) => filter.isPromotion,
+      isRemovable: true,
+      onRemove: (filter: any) => {
+        const newFilter = { ...filter };
+        delete newFilter.isPromotion;
+        return newFilter;
+      },
+      onToggle: () => {},
     },
     {
       id: 3,
-      getLabel: (filter: string) => "Khoang Gia",
-      isActive: (filter: any) => true,
-      isVisible: (filter: any) => true,
-      isRemovable: (filter: any) => true,
-      onRemove: (filter: any) => {},
-      onToggle: 1,
+      getLabel: (filter: any) =>
+        `Từ ${filter.salePrice_gte} đến ${filter.salePrice_lte}`,
+      isActive: () => true,
+      isVisible: (filter: any) =>
+        Object.keys(filter).includes("salePrice_lte") &&
+        Object.keys(filter).includes("salePrice_gte"),
+      onRemove: (filter: any) => {
+        const newFilter = { ...filter };
+        delete newFilter.salePrice_lte;
+        delete newFilter.salePrice_gte;
+        return newFilter;
+      },
+      onToggle: () => {},
+      isRemovable: true,
     },
     {
       id: 4,
@@ -66,9 +77,10 @@ const FilterByViewers = (props: any) => {
       isVisible: (filter: any) => true,
       isRemovable: (filter: any) => true,
       onRemove: (filter: any) => {},
-      onToggle: 1,
+      onToggle: () => {},
     },
   ];
+  console.log("dfgdfggffilter", filter);
 
   const [color, setColor] = useState<"red" | "blue">("red");
   const { classes, cx } = useStyles({ color });
@@ -77,23 +89,16 @@ const FilterByViewers = (props: any) => {
       return null;
     } else {
       if (!onChange) return;
-    //   const newFilter = { ...filter };
-    //   item.onToggle(newFilter);
-    //   onChange(newFilter);
-    // }
-    const newFilter = item.onToggle(filter)
-    onChange(newFilter);
-  };}
-  const handleDelte = (item: any) => {
-    if (item.onRemove) {
-      if (!onChange) return;
-      // const newFilter = { ...filter };
-      // item.onToggle(newFilter);
-      // onChange(newFilter);
-      const newFilter = item.onRemove(filter)
+      const newFilter = item.onToggle(filter);
       onChange(newFilter);
     }
-    else{
+  };
+  const handleDelete = (item: any) => {
+    if (item.isRemovable) {
+      if (!onChange) return;
+      const newFilter = item.onRemove(filter);
+      onChange(newFilter);
+    } else {
       return null;
     }
   };
@@ -108,7 +113,7 @@ const FilterByViewers = (props: any) => {
             clickable={!item.isRemovable}
             onClick={() => handleClick(item)}
             onDelete={() => {
-              handleDelte(item);
+              handleDelete(item);
             }}
           />
         </li>

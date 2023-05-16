@@ -1,6 +1,5 @@
-import React from "react";
-import "./styles.scss";
 import classnames from "classnames";
+import "./styles.scss";
 const TodoList = (props: { todoList: any; onClickTodo: Function }) => {
   const { todoList, onClickTodo } = props;
   const className = (type: string) => {
