@@ -90,11 +90,13 @@ const ListPage = () => {
       console.log("Day la loi", error);
     }
   }, [filter]);
+
   const setNewFilters = (newFilters: any) => {
-    setFilter(newFilters);
+    setFilter((prev) => newFilters);
+    console.log("newfilter in list", newFilters);
   };
 
-  console.log("filter._sort", filter);
+  console.log("filter in list", filter);
 
   return (
     <Box>
@@ -111,7 +113,7 @@ const ListPage = () => {
                 currentSort={filter?._sort}
                 onChange={handleSortChange}
               />
-              <FilterByViewers filters={filter} onChange={setNewFilters} />
+              <FilterByViewers filter={filter} onChange={setNewFilters} />
 
               {!loading ? (
                 <ProductSkeleton />

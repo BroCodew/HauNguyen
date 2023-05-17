@@ -20,10 +20,6 @@ const FilterByCategory = (props: any) => {
     } catch (error) {}
   };
 
-  // const handleCategoryClick = () => {
-
-  // };
-
   const handleCategoryClick = (category: any) => {
     if (onChange) {
       onChange(category.id);

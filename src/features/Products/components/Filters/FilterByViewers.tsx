@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { makeStyles } from "tss-react/mui";
 
 const FilterByViewers = (props: any) => {
@@ -73,14 +73,13 @@ const FilterByViewers = (props: any) => {
     {
       id: 4,
       getLabel: (filter: string) => "Danh Muc",
-      isActive: (filter: any) => true,
+      isActive: (filter: any) => false,
       isVisible: (filter: any) => true,
       isRemovable: (filter: any) => true,
       onRemove: (filter: any) => {},
       onToggle: () => {},
     },
   ];
-  console.log("dfgdfggffilter", filter);
 
   const [color, setColor] = useState<"red" | "blue">("red");
   const { classes, cx } = useStyles({ color });
@@ -102,6 +101,7 @@ const FilterByViewers = (props: any) => {
       return null;
     }
   };
+  console.log("filtersssss", filter);
 
   return (
     <Box component="ul" className={classes.root}>
@@ -110,6 +110,7 @@ const FilterByViewers = (props: any) => {
           <Chip
             label={item?.getLabel(filter)}
             color={item.isActive(filter) ? "primary" : "default"}
+            // color={() => handleColor()}
             clickable={!item.isRemovable}
             onClick={() => handleClick(item)}
             onDelete={() => {
