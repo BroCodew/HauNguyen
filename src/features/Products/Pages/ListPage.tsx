@@ -12,6 +12,8 @@ import ProductSkeleton from "../components/ProductSkeleton";
 import ProductSort from "../components/ProductSort";
 import ProductFilters from "../components/ProductFilters";
 import FilterByViewers from "../components/Filters/FilterByViewers";
+import { useHistory, useLocation } from "react-router-dom";
+import queryString from "query-string";
 // import FilterByViewers from "../components/Filters/FilterByViewers";
 
 const ListPage = () => {
@@ -38,20 +40,26 @@ const ListPage = () => {
   const { classes, cx } = useStyles({ color });
   const [productList, setProductList] = useState([] as any);
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState({
-    _page: 1,
-    _limit: 9,
-    _sort: "salePrice:DESC",
-  });
+  const history = useHistory();
+  const location = useLocation();
+  const queryParams = queryString.parse(location.search);
+
   const [pagination, setPagination] = useState<{
     limit: number;
     page: number;
     total: number;
   }>({
     limit: 10,
-    page: 1,
+    page: Number.parseInt(queryParams._page as string) || 1,
     total: 120,
   });
+
+  const [filter, setFilter] = useState(() => ({
+    ...queryParams,
+    _page: Number.parseInt(queryParams._page as string) || 1,
+    _limit: Number.parseInt(queryParams._limit as string) || 9,
+    _sort: queryParams._sort || "salePrice:DESC",
+  }));
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -83,6 +91,13 @@ const ListPage = () => {
       ...newFilterValue,
     }));
   };
+
+  useEffect(() => {
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
+  }, [history, filter]);
   useEffect(() => {
     try {
       getProductList();
@@ -93,10 +108,7 @@ const ListPage = () => {
 
   const setNewFilters = (newFilters: any) => {
     setFilter((prev) => newFilters);
-    console.log("newfilter in list", newFilters);
   };
-
-  console.log("filter in list", filter);
 
   return (
     <Box>
