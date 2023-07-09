@@ -5,7 +5,7 @@ import Grid from "@mui/system/Unstable_Grid";
 import { makeStyles } from "tss-react/mui";
 
 import { Pagination } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import productApi from "../../../api/productApi";
 import ProductList from "../components/ProductList";
 import ProductSkeleton from "../components/ProductSkeleton";
@@ -14,7 +14,6 @@ import ProductFilters from "../components/ProductFilters";
 import FilterByViewers from "../components/Filters/FilterByViewers";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
-// import FilterByViewers from "../components/Filters/FilterByViewers";
 
 const ListPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
@@ -38,12 +37,21 @@ const ListPage = () => {
   );
   const [color, setColor] = useState<"red" | "blue">("red");
   const { classes, cx } = useStyles({ color });
-  const [productList, setProductList] = useState([] as any);
-  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  const queryParams = queryString.parse(location.search);
-
+  const queryParams: any = useMemo(() => {
+    const params = queryString.parse(location.search);
+    return {
+      ...params,
+      _page: Number.parseInt(params._page as string) || 1,
+      _limit: Number.parseInt(params._limit as string) || 9,
+      _sort: params._sort || "salePrice:DESC",
+      isPromotion: params.isPromotion === "true",
+      isFreeShip: params.isFreeShip === "true",
+    };
+  }, [location.search]);
+  const [productList, setProductList] = useState([] as any);
+  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<{
     limit: number;
     page: number;
@@ -54,60 +62,63 @@ const ListPage = () => {
     total: 120,
   });
 
-  const [filter, setFilter] = useState(() => ({
-    ...queryParams,
-    _page: Number.parseInt(queryParams._page as string) || 1,
-    _limit: Number.parseInt(queryParams._limit as string) || 9,
-    _sort: queryParams._sort || "salePrice:DESC",
-  }));
-
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
   const getProductList = async () => {
     setLoading(false);
     await delay(1000);
-    const { data, pagination } = await productApi.getAll(filter);
+    const { data, pagination } = await productApi.getAll(queryParams);
     setProductList(data);
     setPagination(pagination);
     setLoading(true);
   };
 
-  const handleChangePage = (e: any, page: any) => {
-    setFilter((prev: any) => ({
-      ...prev,
-      _page: page,
-    }));
-  };
-  const handleSortChange = (newSortValue: any) => {
-    setFilter((prev) => ({
-      ...prev,
-      _sort: newSortValue,
-    }));
-  };
-  //
-  const handleFilterChange = (newFilterValue: any) => {
-    setFilter((prev) => ({
-      ...prev,
-      ...newFilterValue,
-    }));
-  };
-
-  useEffect(() => {
-    history.push({
-      pathname: history.location.pathname,
-      search: queryString.stringify(filter),
-    });
-  }, [history, filter]);
   useEffect(() => {
     try {
       getProductList();
     } catch (error) {
       console.log("Day la loi", error);
     }
-  }, [filter]);
+  }, [queryParams]);
+
+  const handleChangePage = (e: any, page: any) => {
+    const filter = {
+      ...queryParams,
+      _page: page,
+    };
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
+  };
+  const handleSortChange = (newSortValue: any) => {
+    const filter = {
+      ...queryParams,
+      _sort: newSortValue,
+    };
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
+  };
+  //
+  const handleFilterChange = (newFilterValue: any) => {
+    const filter = {
+      ...queryParams,
+      ...newFilterValue,
+    };
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
+  };
 
   const setNewFilters = (newFilters: any) => {
-    setFilter((prev) => newFilters);
+    // setFilter((prev: any) => newFilters);
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(newFilters),
+    });
   };
 
   return (
@@ -116,16 +127,19 @@ const ListPage = () => {
         <Grid container spacing={1}>
           <Grid className={classes.left}>
             <Paper elevation={0}>
-              <ProductFilters filters={filter} onChange={handleFilterChange} />
+              <ProductFilters
+                filters={queryParams}
+                onChange={handleFilterChange}
+              />
             </Paper>
           </Grid>
           <Grid className={classes.right}>
             <Paper elevation={0}>
               <ProductSort
-                currentSort={filter?._sort}
+                currentSort={queryParams?._sort}
                 onChange={handleSortChange}
               />
-              <FilterByViewers filter={filter} onChange={setNewFilters} />
+              <FilterByViewers filter={queryParams} onChange={setNewFilters} />
 
               {!loading ? (
                 <ProductSkeleton />
