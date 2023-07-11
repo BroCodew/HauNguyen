@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/system/Unstable_Grid";
 import { makeStyles } from "tss-react/mui";
+import ProductThumbnail from "../components/ProductThumbnail";
 
 const DetailPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
@@ -34,7 +35,9 @@ const DetailPage = () => {
       <Container>
         <Paper elevation={0}>
           <Grid container>
-            <Grid className={classes.left}>Thumbnail</Grid>
+            <Grid className={classes.left}>
+              <ProductThumbnail product={{}} />
+            </Grid>
             <Grid className={classes.right}>Product Info</Grid>
           </Grid>
         </Paper>

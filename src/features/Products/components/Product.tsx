@@ -6,6 +6,7 @@ import {
   STATIC_HOST_URL_IMG,
   THUMBNAIL_URL_IMG_PLACEHOLDER,
 } from "../../../constant";
+import { useHistory } from "react-router-dom";
 
 interface IProductList {
   product: IProducts;
@@ -15,8 +16,14 @@ const Product = ({ product }: IProductList) => {
   const thumbnailUrl = product.thumbnail
     ? `${STATIC_HOST_URL_IMG}${product.thumbnail?.url}`
     : THUMBNAIL_URL_IMG_PLACEHOLDER;
+
+  const history = useHistory();
+
+  const handleClickProductDetail = () => {
+    history.push(`products/${product.id}`);
+  };
   return (
-    <Box padding={1}>
+    <Box padding={1} onClick={handleClickProductDetail}>
       {/* <Skeleton variant="rectangular" width="100%" height={118}></Skeleton> */}
       <Box minHeight="200px">
         <img

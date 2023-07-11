@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
 import TodoList from "../components/Todolist/todoList";
+import TodoForm from "../components/TodoForm";
 
 const Todo = () => {
   // const [searchParams, setSearchParams] = useSearchParams();
@@ -48,9 +48,14 @@ const Todo = () => {
   const renderTodoList = todoList.filter(
     (todo) => filterStatus === "all" || filterStatus === todo.status
   );
+  const handleTodoFromSubmit = (values: any) => {
+    console.log("form submission", values);
+  };
 
   return (
     <div>
+      <h3>TodoForm</h3>
+      <TodoForm onSubmit={handleTodoFromSubmit} />
       <TodoList todoList={renderTodoList} onClickTodo={handleClickTodo} />
       <button onClick={handleShowAll}>Show ALl</button>
       <button onClick={handleShowNew}>Show New</button>

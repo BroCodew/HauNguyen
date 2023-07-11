@@ -16,13 +16,6 @@ const TodoList = (props: { todoList: any; onClickTodo: Function }) => {
   };
   return (
     <div className="todo-container">
-      {/* {todoList.map((item: any) => {
-        return (
-          <div key={item.id} className={className(item.status)}>
-            {item.title}
-          </div>
-        );
-      })} */}
       {todoList.map((item: any, idx: any) => {
         return (
           <div
