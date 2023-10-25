@@ -5,7 +5,14 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/system/Unstable_Grid";
 import { makeStyles } from "tss-react/mui";
 import ProductThumbnail from "../components/ProductThumbnail";
+import { useParams, useRouteMatch } from "react-router-dom";
+import useFetchProductId from "../../../customHook/useFetchData";
+import ProductInfo from "../components/ProductInfo";
 
+type MatchTypes = { params?: any };
+interface RouteParams {
+  productId: string;
+}
 const DetailPage = () => {
   const useStyles = makeStyles<{ color: "red" | "blue" }>()(
     (theme, { color }) => ({
@@ -30,15 +37,27 @@ const DetailPage = () => {
   );
   const [color, setColor] = useState<"red" | "blue">("red");
   const { classes, cx } = useStyles({ color });
+  const params = useParams<RouteParams>();
+  const { productId } = params;
+  const [{ product, loading }] = useFetchProductId(productId);
+  if (loading === true)
+    return (
+      <div>
+        <div>sdf</div>
+      </div>
+    );
+
   return (
     <Box className={classes.root}>
       <Container>
         <Paper elevation={0}>
           <Grid container>
             <Grid className={classes.left}>
-              <ProductThumbnail product={{}} />
+              <ProductThumbnail product={product} />
             </Grid>
-            <Grid className={classes.right}>Product Info</Grid>
+            <Grid className={classes.right}>
+              <ProductInfo product={product} />
+            </Grid>
           </Grid>
         </Paper>
       </Container>

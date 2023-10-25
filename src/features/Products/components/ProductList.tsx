@@ -8,6 +8,7 @@ interface IProductList {
 }
 
 const ProductList = ({ data }: IProductList) => {
+
   return (
     <Box>
       <Grid container>

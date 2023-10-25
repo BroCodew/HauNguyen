@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { makeStyles } from "tss-react/mui";
 
 const FilterByViewers = (props: any) => {
@@ -101,7 +101,6 @@ const FilterByViewers = (props: any) => {
       return null;
     }
   };
-  // console.log("filtersssss", filter);
 
   return (
     <Box component="ul" className={classes.root}>

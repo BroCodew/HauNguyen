@@ -1,9 +1,14 @@
-import React from 'react'
+import axiosClient from "./axiosClient";
 
-const userApi = () => {
-  return (
-    <div>userApi</div>
-  )
-}
+const userApi = {
+  register(data: any) {
+    const url = "/auth/local/register";
+    return axiosClient.post(url, data);
+  },
+  login(data: any) {
+    const url = "/auth/local";
+    return axiosClient.post(url, data);
+  },
+};
 
-export default userApi
+export default userApi;

@@ -2,6 +2,7 @@ import classnames from "classnames";
 import "./styles.scss";
 const TodoList = (props: { todoList: any; onClickTodo: Function }) => {
   const { todoList, onClickTodo } = props;
+
   const className = (type: string) => {
     return classnames("checkbox", {
       completed: type === "completed",

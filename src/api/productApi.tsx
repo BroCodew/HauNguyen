@@ -26,7 +26,7 @@ export interface IFilters {
 }
 
 const productApi = {
-  async getAll(params: { _page: number; _limit: number }) {
+  async getAll(params: { _page: number; _limit: number; }) {
     // Transform _page to _start
     const newParams: any = { ...params };
     newParams._start =
@@ -42,6 +42,9 @@ const productApi = {
     const count: number = await axiosClient.get("/products/count", {
       params: newParams,
     });
+    // const productId: number = await axiosClient.get("/products", {
+    //   params,
+    // });
     // Build response and return
     return {
       data: productList,
@@ -50,6 +53,7 @@ const productApi = {
         limit: params._limit,
         total: count,
       },
+      // productId,
     };
   },
 };

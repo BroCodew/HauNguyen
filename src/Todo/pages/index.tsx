@@ -48,8 +48,19 @@ const Todo = () => {
   const renderTodoList = todoList.filter(
     (todo) => filterStatus === "all" || filterStatus === todo.status
   );
-  const handleTodoFromSubmit = (values: any) => {
-    console.log("form submission", values);
+  const handleTodoFromSubmit = (values: any, idx: any) => {
+    
+    const newTodoList = {
+      id: todoList.length + 1,
+      title: values.title,
+      status: "new",
+    };
+   
+
+    const newTodo = [...todoList, newTodoList];
+ 
+
+    setTodoList(newTodo);
   };
 
   return (

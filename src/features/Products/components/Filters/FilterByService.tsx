@@ -32,10 +32,7 @@ const FilterByService = (props: any) => {
     if (!onChange) return;
     const { name, checked } = e.target;
     onChange({ [name]: checked });
-    console.log(checked);
   };
-
-  console.log(111, filters);
 
   return (
     <Box className={classes.root}>

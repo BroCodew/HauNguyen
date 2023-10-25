@@ -12,7 +12,7 @@ const categoryApi = {
     return axiosClient.get<any, aaa[]>(url, { params });
   },
   get(id: any) {
-    const url = `/categories/${id}`;
+    const url = `/products/${id}`;
     return axiosClient.get(url);
   },
   add(data: any) {
